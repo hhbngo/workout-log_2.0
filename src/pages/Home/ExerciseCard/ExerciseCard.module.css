@@ -1,0 +1,56 @@
+.container {
+  border-radius: 8px;
+  box-shadow: 0px 3px 9px rgba(144, 144, 144, 0.4);
+  width: clamp(100px, 85%, 350px);
+  margin: 0 12px 30px;
+  cursor: pointer;
+}
+
+.container span {
+  color: rgb(168, 168, 168);
+  display: block;
+}
+
+.top_label {
+  background-color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 12px 12px 12px 15px;
+}
+
+.top_label p {
+  color: rgb(59, 59, 59);
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0 0 2px;
+}
+
+.bottom_label {
+  background-color: #1890ff;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 15px;
+}
+
+.bottom_label p {
+  margin: 0;
+}
+
+.ellipses {
+  width: 40px;
+  float: right;
+  z-index: 1;
+}
+
+.pop_content p {
+  margin: 0;
+  cursor: pointer;
+  color: #40a9ff;
+}
+
+.pop_content p:first-of-type {
+  margin-bottom: 4px;
+}

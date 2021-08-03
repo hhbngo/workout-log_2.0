@@ -1,0 +1,35 @@
+.container {
+  background-color: white;
+  border-radius: 4px;
+  margin: calc(25vh - 50px) auto 0;
+  padding: 30px 40px 40px;
+  width: clamp(100px, 80%, 520px);
+  transform: translateY(100vh);
+}
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.show {
+  animation: slide-up 0.3s forwards;
+}
+
+.save_settings {
+  color: #1890ff;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+  width: max-content;
+  margin: 3px auto 0;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0vh);
+  }
+}

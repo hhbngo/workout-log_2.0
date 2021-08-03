@@ -1,0 +1,22 @@
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.212);
+  display: none;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 999;
+}
+
+.clickBox {
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
+.show {
+  display: block;
+}

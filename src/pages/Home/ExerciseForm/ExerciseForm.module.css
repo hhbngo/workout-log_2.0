@@ -1,0 +1,26 @@
+.container {
+  background-color: white;
+  border-radius: 4px;
+  margin: calc(25vh - 70px) auto 0;
+  padding: 30px 35px 40px;
+  width: clamp(100px, 80%, 520px);
+  transform: translateY(100vh);
+}
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.show {
+  animation: slide-up 0.3s forwards;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0vh);
+  }
+}

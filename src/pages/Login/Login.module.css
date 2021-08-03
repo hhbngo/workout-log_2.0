@@ -1,0 +1,74 @@
+.container {
+  padding-top: clamp(50px, 25%, 160px);
+}
+
+.form_area {
+  margin: 0 auto;
+  width: clamp(200px, 85%, 500px);
+  background-color: white;
+  box-shadow: 0px 3px 12px rgba(144, 144, 144, 0.2);
+  border-radius: 10px;
+  padding: 30px 40px 20px;
+}
+
+.form_area h1 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.form_area label {
+  font-weight: bold;
+}
+
+.form_area a {
+  margin-top: 10px;
+  text-decoration: underline !important;
+  color: rgb(129, 129, 129) !important;
+}
+
+.form_area button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #69c0ff;
+  border: 1px solid #69c0ff;
+}
+
+.form_area input {
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  height: 43px;
+}
+
+.signin_btn {
+  font-size: 16px;
+  width: 100%;
+  color: white;
+  background-color: #1890ff;
+  padding: 10px;
+  border: 1px solid #1890ff;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.register_block {
+  clear: both;
+  text-align: center;
+  margin: 70px 0 0;
+}
+
+.error {
+  width: clamp(200px, 100%, 500px);
+  padding: 10px;
+  background-color: rgb(245, 172, 163);
+  color: rgb(207, 35, 35);
+  border-radius: 4px;
+  margin-bottom: 5px;
+  text-align: center;
+}

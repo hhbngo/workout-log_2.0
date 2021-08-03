@@ -1,0 +1,24 @@
+.container {
+  margin: 0;
+  position: relative;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+.spinner_container {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(50vh - 100px);
+}
+
+.cards_container {
+  padding-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.phantom {
+  width: clamp(100px, 85%, 350px);
+  margin: 0 12px 30px;
+}
