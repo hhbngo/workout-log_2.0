@@ -27,7 +27,6 @@ const App: React.FC = () => {
   }, []);
 
   const mapRoutes = (authed: boolean | null): JSX.Element[] => {
-    console.log('mapping new routes');
     const routes = [];
     for (const route in routesConfig) {
       let { path, component, requireAuth, loggedInAccess } =

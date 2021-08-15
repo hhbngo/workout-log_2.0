@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './EntryForm.module.css';
-import { Form, Input, Button, FormInstance } from 'antd';
+import { Form, Input, Button, FormInstance, Checkbox } from 'antd';
 
 interface EntryFormProps {
   form: FormInstance;
@@ -9,6 +9,8 @@ interface EntryFormProps {
   onClose: () => void;
   prefs: { weight: number; reps: number; rest: number };
   onSavePrefs: () => void;
+  checked: boolean;
+  onCheck: () => void;
 }
 
 const { Item } = Form;
@@ -20,58 +22,62 @@ const EntryForm: React.FC<EntryFormProps> = ({
   onClose,
   prefs,
   onSavePrefs,
+  checked,
+  onCheck,
 }) => {
   return (
     <div className={`${classes.container} ${show ? classes.show : ''}`}>
       <h1>Add Set</h1>
       <Form form={form} onFinish={onSubmit} labelAlign="right">
-        <div style={{ display: 'flex', marginBottom: '15px' }}>
+        <div style={{ display: 'flex', marginBottom: '2px' }}>
           <Item
             name="weight"
             rules={[{ required: true }]}
             wrapperCol={{ span: 12 }}
-            label="Weight"
+            label="weight"
             initialValue={prefs.weight}
           >
-            <Input
-              type="number"
-              style={{ fontSize: '16px', textAlign: 'right' }}
-            />
+            <Input type="number" style={{ fontSize: '16px' }} step={0.5} />
           </Item>
           <Item
             name="reps"
             rules={[{ required: true }]}
             wrapperCol={{ span: 12 }}
             initialValue={prefs.reps}
-            label="Reps"
+            label="reps"
+            style={{ marginLeft: '8px', marginRight: '8px' }}
           >
-            <Input
-              type="number"
-              style={{ fontSize: '16px', textAlign: 'right' }}
-            />
+            <Input type="number" style={{ fontSize: '16px' }} />
           </Item>
           <Item
             name="rest"
             rules={[{ required: true }]}
             wrapperCol={{ span: 12 }}
             initialValue={prefs.rest}
-            label="Rest (secs)"
+            label="rest (s)"
           >
-            <Input
-              type="number"
-              style={{ fontSize: '16px', textAlign: 'right' }}
-            />
+            <Input type="number" style={{ fontSize: '16px' }} />
           </Item>
         </div>
-
-        <Item name="notes" initialValue="">
+        <Checkbox
+          checked={checked}
+          onChange={onCheck}
+          style={{ marginBottom: checked ? '0px' : '15px' }}
+        >
+          Include note?
+        </Checkbox>
+        <Item
+          name="notes"
+          initialValue=""
+          style={{ marginTop: '10px', display: checked ? 'block' : 'none' }}
+        >
           <Input placeholder="Notes" style={{ fontSize: '16px' }} />
         </Item>
         <div
           style={{
             display: 'flex',
             justifyContent: 'center',
-            paddingTop: '10px',
+            paddingTop: '4px',
           }}
         >
           <Button

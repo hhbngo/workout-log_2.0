@@ -9,9 +9,14 @@ import {
   insertNewSet,
   removeSet,
 } from '../../util/exercises';
-import { MessageInstance } from 'antd/lib/message';
+import { message } from 'antd';
 
 const BASE_URL = 'https://workout-log-f70d8-default-rtdb.firebaseio.com';
+
+message.config({
+  maxCount: 3,
+  top: 44,
+});
 
 interface Prefs {
   weight: number;
@@ -94,10 +99,11 @@ export const fetchExercises = () => {
   };
 };
 
-export const addExercise = (
-  exerciseData: { name: string; bodyP: string; prefs: Prefs },
-  message: MessageInstance
-) => {
+export const addExercise = (exerciseData: {
+  name: string;
+  bodyP: string;
+  prefs: Prefs;
+}) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     const { userId, token } = getState().auth;
     dispatch(toggleLoad());
@@ -118,19 +124,15 @@ export const addExercise = (
           },
         });
         window.scrollTo(0, 0);
-        message.success('Exercise created successfully!');
+        message.success('Exercise created!');
       })
-      .catch((err) => {
-        dispatch(toggleLoad());
-        message.error('Unable to create exercise!');
+      .catch(() => {
+        window.location.reload();
       });
   };
 };
 
-export const deleteExercise = (
-  exerciseKey: string,
-  message: MessageInstance
-) => {
+export const deleteExercise = (exerciseKey: string) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     const { userId, token } = getState().auth;
     dispatch(toggleLoad());
@@ -147,19 +149,19 @@ export const deleteExercise = (
           type: ActionTypes.SET_EXERCISE,
           payload: filteredExercises,
         });
-        message.success('Exercise deleted successfully!');
+        message.success('Exercise deleted!');
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to delete exercise!');
+        window.location.reload();
       });
   };
 };
 
-export const editExercise = (
-  exerciseData: { name: string; bodyP: string; key: string },
-  message: MessageInstance
-) => {
+export const editExercise = (exerciseData: {
+  name: string;
+  bodyP: string;
+  key: string;
+}) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     const { userId, token } = getState().auth;
     const { key, ...rest } = exerciseData;
@@ -178,16 +180,15 @@ export const editExercise = (
           type: ActionTypes.SET_EXERCISE,
           payload: updatedExercises,
         });
-        message.success('Exercise updated successfully!');
+        message.success('Exercise updated!');
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to update exercise!');
+        window.location.reload();
       });
   };
 };
 
-export const addEntry = (exerciseKey: string, message: MessageInstance) => {
+export const addEntry = (exerciseKey: string) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     dispatch(toggleLoad());
     const { userId, token } = getState().auth;
@@ -213,23 +214,18 @@ export const addEntry = (exerciseKey: string, message: MessageInstance) => {
             type: ActionTypes.SET_EXERCISE,
             payload: updatedCollection,
           });
-          message.success('Created entry successfully!');
+          message.success('Created entry!');
         } else {
           throw new Error();
         }
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to create new entry.');
+        window.location.reload();
       });
   };
 };
 
-export const deleteEntry = (
-  exerciseKey: string,
-  entryKey: string,
-  message: MessageInstance
-) => {
+export const deleteEntry = (exerciseKey: string, entryKey: string) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     dispatch(toggleLoad());
     const { userId, token } = getState().auth;
@@ -244,11 +240,10 @@ export const deleteEntry = (
           type: ActionTypes.SET_EXERCISE,
           payload: updatedCollection,
         });
-        message.success('Entry deleted successfully!');
+        message.success('Entry deleted!');
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to delete entry.');
+        window.location.reload();
       });
   };
 };
@@ -256,8 +251,7 @@ export const deleteEntry = (
 export const addSet = (
   exerciseKey: string,
   entryKey: string,
-  setData: Omit<Set, 'key'>,
-  message: MessageInstance
+  setData: Omit<Set, 'key'>
 ) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     dispatch(toggleLoad());
@@ -282,8 +276,7 @@ export const addSet = (
         message.success('Set added!');
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to add set.');
+        window.location.reload();
       });
   };
 };
@@ -291,8 +284,7 @@ export const addSet = (
 export const deleteSet = (
   exerciseKey: string,
   entryKey: string,
-  setKey: string,
-  message: MessageInstance
+  setKey: string
 ) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     dispatch(toggleLoad());
@@ -316,17 +308,12 @@ export const deleteSet = (
         message.success('Set deleted!');
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to remove set.');
+        window.location.reload();
       });
   };
 };
 
-export const savePrefs = (
-  exerciseKey: string,
-  prefs: Prefs,
-  message: MessageInstance
-) => {
+export const savePrefs = (exerciseKey: string, prefs: Prefs) => {
   return (dispatch: Dispatch, getState: () => StoreState) => {
     dispatch(toggleLoad());
     const { userId, token } = getState().auth;
@@ -347,8 +334,7 @@ export const savePrefs = (
         message.success('Saved set settings!');
       })
       .catch(() => {
-        dispatch(toggleLoad());
-        message.error('Unable to save settings.');
+        window.location.reload();
       });
   };
 };

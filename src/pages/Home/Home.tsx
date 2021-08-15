@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { StoreState } from '../../store/reducers';
-import { Form, Spin, message } from 'antd';
+import { Form, Spin } from 'antd';
 import classes from './Home.module.css';
 import Modal from '../../components/Modal/Modal';
 import ExerciseForm from './ExerciseForm/ExerciseFrom';
@@ -59,7 +59,7 @@ const Home: React.FC = () => {
   const handleDeleteClick = (e: React.MouseEvent<HTMLElement>, key: string) => {
     e.stopPropagation();
     if (window.confirm('Are you sure you want to delete this exercise?')) {
-      dispatch(deleteExercise(key, message));
+      dispatch(deleteExercise(key));
     }
   };
 
@@ -74,10 +74,7 @@ const Home: React.FC = () => {
     handleModalClose();
     const { name, category: bodyP } = values;
     dispatch(
-      addExercise(
-        { name, bodyP, prefs: { weight: 45, reps: 1, rest: 60 } },
-        message
-      )
+      addExercise({ name, bodyP, prefs: { weight: 45, reps: 1, rest: 60 } })
     );
   };
 
@@ -85,7 +82,7 @@ const Home: React.FC = () => {
     if (!selectedKey) return;
     handleModalClose();
     const { name, category: bodyP } = values;
-    dispatch(editExercise({ name, bodyP, key: selectedKey }, message));
+    dispatch(editExercise({ name, bodyP, key: selectedKey }));
     setSelectedKey(null);
   };
 

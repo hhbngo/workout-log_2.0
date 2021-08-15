@@ -11,7 +11,7 @@ import {
   savePrefs,
 } from '../../store/actions';
 import classes from './Entry.module.css';
-import { Button, message, Form } from 'antd';
+import { Button, Form } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 
 import Modal from '../../components/Modal/Modal';
@@ -30,6 +30,7 @@ const Entry: React.FC = () => {
   const [selectedEntryKey, setSelectedEntryKey] = useState<null | string>(null);
   const [showModal, setShowModal] = useState(false);
   const [entryDate, setEntryDate] = useState('');
+  const [notesChecked, setNotesCheckd] = useState(false);
   const [form] = Form.useForm();
   const history = useHistory<HistoryState>();
   const { exercises, fetched, loading } = useSelector(
@@ -43,6 +44,7 @@ const Entry: React.FC = () => {
 
   const handleModalClose = () => {
     setShowModal(false);
+    setNotesCheckd(false);
     form.resetFields();
   };
 
@@ -56,14 +58,14 @@ const Entry: React.FC = () => {
 
   const handleAddEntry = () => {
     if (exercise && exercise.key) {
-      dispatch(addEntry(exercise.key, message));
+      dispatch(addEntry(exercise.key));
     }
   };
 
   const handleDeleteEntry = (entryKey: string) => {
     if (exercise && exercise.key) {
       if (window.confirm('Are you sure you want to delete this entry?')) {
-        dispatch(deleteEntry(exercise.key, entryKey, message));
+        dispatch(deleteEntry(exercise.key, entryKey));
       }
     }
   };
@@ -75,14 +77,14 @@ const Entry: React.FC = () => {
         data: new Date().toISOString(),
         ...fields,
       };
-      dispatch(addSet(exercise.key, selectedEntryKey, setData, message));
+      dispatch(addSet(exercise.key, selectedEntryKey, setData));
       handleModalClose();
     }
   };
 
   const handleSetDelete = (setKey: string) => {
     if (exercise && exercise.key && selectedEntryKey) {
-      dispatch(deleteSet(exercise.key, selectedEntryKey, setKey, message));
+      dispatch(deleteSet(exercise.key, selectedEntryKey, setKey));
       handleModalClose();
     }
   };
@@ -93,12 +95,17 @@ const Entry: React.FC = () => {
         .validateFields(['weight', 'reps', 'rest'])
         .then(() => {
           const { notes, ...prefs } = form.getFieldsValue();
-          dispatch(savePrefs(exercise.key, prefs, message));
+          dispatch(savePrefs(exercise.key, prefs));
         })
         .catch(() => {
           return;
         });
     }
+  };
+
+  const handleNotesCheck = () => {
+    if (notesChecked) form.resetFields(['notes']);
+    setNotesCheckd(!notesChecked);
   };
 
   const exercise = useMemo(() => {
@@ -155,7 +162,7 @@ const Entry: React.FC = () => {
       ? entry.sets
           .map((set) => set.weight * set.reps)
           .reduce((a, b) => a + b, 0)
-      : '(No sets)';
+      : '(no sets)';
   }, [entry]);
 
   useEffect(() => {
@@ -166,18 +173,21 @@ const Entry: React.FC = () => {
   return exercise ? (
     <div className={classes.container}>
       <BackButton handleBackClick={entry ? goToEntrySelect : goToHome} />
-      <Modal show={showModal} onClose={handleModalClose}>
-        <EntryForm
-          form={form}
-          show={showModal}
-          onSubmit={handleSetSubmit}
-          onClose={handleModalClose}
-          prefs={exercise.prefs}
-          onSavePrefs={handleSavePrefs}
-        />
-      </Modal>
+
       {entry ? (
         <>
+          <Modal show={showModal} onClose={handleModalClose}>
+            <EntryForm
+              form={form}
+              show={showModal}
+              onSubmit={handleSetSubmit}
+              onClose={handleModalClose}
+              prefs={exercise.prefs}
+              onSavePrefs={handleSavePrefs}
+              checked={notesChecked}
+              onCheck={handleNotesCheck}
+            />
+          </Modal>
           <DeleteButton
             handleDeleteClick={() => handleDeleteEntry(entry.key)}
             loading={loading}
@@ -185,13 +195,13 @@ const Entry: React.FC = () => {
           <h1>{entryDate}</h1>
           <div className={classes.sets_container}>
             <p className={classes.volume}>
-              <span>Total volume:</span> {totalVolume}
+              <span>Volume:</span> {totalVolume}
             </p>
             {sets}
             <Button
               type="dashed"
               style={{
-                width: '210px',
+                width: '216px',
                 marginTop: '10px',
               }}
               onClick={handleOpenModal}

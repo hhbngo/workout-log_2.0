@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined, LineChartOutlined } from '@ant-design/icons';
 
 interface NavbarProps {
   isAuth: boolean;
@@ -17,9 +17,14 @@ const Navbar: React.FC<NavbarProps> = ({ isAuth }) => {
         <Link to="/">Home</Link>
       </Item>
       {isAuth ? (
-        <Item key="/logout" style={{ position: 'absolute', right: '7px' }}>
-          <Link to="/logout">Log out</Link>
-        </Item>
+        <>
+          <Item key="/stats" icon={<LineChartOutlined />}>
+            <Link to="/stats">Stats</Link>
+          </Item>
+          <Item key="/logout" style={{ position: 'absolute', right: '7px' }}>
+            <Link to="/logout">Log out</Link>
+          </Item>
+        </>
       ) : (
         <Item key="/login" style={{ position: 'absolute', right: '7px' }}>
           <Link to="/login">Login</Link>

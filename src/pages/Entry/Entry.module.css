@@ -24,7 +24,7 @@
   align-items: center;
   margin: 0 auto 5px;
   padding: 10px 12px 10px 16px;
-  width: clamp(100px, 90%, 500px);
+  width: clamp(100px, 95%, 500px);
 }
 
 .entry_label .date {
@@ -49,7 +49,7 @@
   min-width: 280px;
   border: 1px solid rgb(238, 238, 238);
   border-radius: 5px;
-  padding: 50px 56px 18px 34px;
+  padding: 50px 60px 18px 28px;
   position: relative;
 }
 

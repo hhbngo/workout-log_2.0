@@ -5,6 +5,7 @@ import Logout from './pages/Logout/Logout';
 import Landing from './pages/Landing/Landing';
 import Home from './pages/Home/Home';
 import Entry from './pages/Entry/Entry';
+import Stats from './pages/Stats/Stats';
 
 export interface RouteProps {
   [key: string]: {
@@ -37,6 +38,12 @@ const routesConfig: RouteProps = {
   entry: {
     path: '/entry',
     component: Entry,
+    requireAuth: true,
+    loggedInAccess: true,
+  },
+  stats: {
+    path: '/stats',
+    component: Stats,
     requireAuth: true,
     loggedInAccess: true,
   },

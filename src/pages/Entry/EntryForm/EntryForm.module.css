@@ -2,8 +2,8 @@
   background-color: white;
   border-radius: 4px;
   margin: calc(25vh - 50px) auto 0;
-  padding: 30px 40px 40px;
-  width: clamp(100px, 80%, 520px);
+  padding: 25px 40px 35px;
+  width: clamp(100px, 80%, 500px);
   transform: translateY(100vh);
 }
 

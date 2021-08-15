@@ -1,4 +1,5 @@
 import { Exercise, Entry, Set } from '../store/actions';
+import dayjs from 'dayjs';
 
 interface RawSetStructure {
   date: string;
@@ -157,4 +158,32 @@ export const removeSet = (
   return exercises.map((e, i) =>
     i === selectedExerciseIndex ? updatedExercise : e
   );
+};
+
+export const filterEntriesWithDateGap = (entries: Entry[], gap: number) => {
+  if (entries.length <= 1) return entries;
+  const selectedEntries = [];
+  selectedEntries.push(entries[0]);
+  let dateCounter = new Date(entries[0].date).getDate();
+  entries.forEach((en) => {
+    const date = new Date(en.date).getDate();
+    if (date >= dateCounter + gap) {
+      selectedEntries.push(en);
+      dateCounter = date;
+    }
+  });
+  return selectedEntries;
+};
+
+export const parseEntriesForCharting = (entries: Entry[]) => {
+  return entries.map((en) => {
+    const date = dayjs(en.date).format('MM/DD');
+    const totalVolume = en.sets
+      .map((set) => set.weight * set.reps)
+      .reduce((a, b) => a + b, 0);
+    return {
+      date,
+      volume: totalVolume,
+    };
+  });
 };
