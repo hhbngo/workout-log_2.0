@@ -175,7 +175,7 @@ export const filterEntriesWithDateGap = (entries: Entry[], gap: number) => {
   return selectedEntries;
 };
 
-export const parseEntriesForCharting = (entries: Entry[]) => {
+export const parseEntriesTotalVolume = (entries: Entry[]) => {
   return entries.map((en) => {
     const date = dayjs(en.date).format('MM/DD');
     const totalVolume = en.sets
@@ -184,6 +184,20 @@ export const parseEntriesForCharting = (entries: Entry[]) => {
     return {
       date,
       volume: totalVolume,
+    };
+  });
+};
+
+export const parseEntriesMaxWeight = (entries: Entry[]) => {
+  return entries.map((en) => {
+    const date = dayjs(en.date).format('MM/DD');
+    if (en.sets.length === 0) return { date, max: 0 };
+    const maxWeight = en.sets.reduce((a, b) =>
+      parseFloat(a.weight.toString()) > parseFloat(b.weight.toString()) ? a : b
+    ).weight;
+    return {
+      date,
+      max: maxWeight,
     };
   });
 };

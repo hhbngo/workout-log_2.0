@@ -143,7 +143,7 @@ const Entry: React.FC = () => {
   const sets = useMemo(() => {
     return entry && entry.sets.length > 0
       ? entry.sets.map((s, i) => {
-          const time = dayjs(s.date).format('hh:mm a');
+          const time = dayjs(s.data).format('hh:mm a');
           return (
             <Set
               index={i}

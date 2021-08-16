@@ -5,11 +5,13 @@ import { Spin, Select, Radio, RadioChangeEvent } from 'antd';
 import { fetchExercises } from '../../store/actions/exercises';
 import {
   filterEntriesWithDateGap,
-  parseEntriesForCharting,
+  parseEntriesTotalVolume,
+  parseEntriesMaxWeight,
 } from '../../util/exercises';
 import classes from './Stats.module.css';
 
 import VolumeChart from './VolumeChart';
+import MaxChart from './MaxChart';
 import EmptyBox from '../../components/EmptyBox/EmptyBox';
 
 const { Option } = Select;
@@ -20,6 +22,7 @@ const Stats: React.FC = () => {
   );
   const [selectedKey, setSelectedKey] = useState<null | string>(null);
   const [dateMode, setDateMode] = useState(1);
+  const [dataMode, setDataMode] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,20 +40,29 @@ const Stats: React.FC = () => {
   const datasetForChart = useMemo(() => {
     if (selectedKey) {
       const exerciseIndex = exercises.findIndex((ex) => ex.key === selectedKey);
-      const reorderedEntries = [...exercises[exerciseIndex].entries].reverse();
+      const selectedExercise = exercises[exerciseIndex];
+      if (selectedExercise.entries.length === 0) return undefined;
+      const reorderedEntries =
+        dateMode === 1
+          ? selectedExercise.entries.slice(0, 31)
+          : [...selectedExercise.entries];
       const filteredEntries = filterEntriesWithDateGap(
-        reorderedEntries,
+        reorderedEntries.reverse(),
         dateMode
       );
-      return parseEntriesForCharting(filteredEntries);
+      return dataMode === 1
+        ? parseEntriesTotalVolume(filteredEntries)
+        : parseEntriesMaxWeight(filteredEntries);
     } else {
       return undefined;
     }
-  }, [selectedKey, dateMode, exercises]);
+  }, [selectedKey, dateMode, dataMode, exercises]);
 
   const handleSelectionChange = (e: string) => setSelectedKey(e);
 
   const handleDateChange = (e: RadioChangeEvent) => setDateMode(e.target.value);
+
+  const handleDataChange = (e: RadioChangeEvent) => setDataMode(e.target.value);
 
   return fetched ? (
     <div className={classes.container}>
@@ -70,15 +82,27 @@ const Stats: React.FC = () => {
           <Radio.Button value={30}>Mo.</Radio.Button>
         </Radio.Group>
       </div>
-      {selectedKey ? (
+      {datasetForChart ? (
         <>
-          <h2 className={classes.chart_label}>Total Volume</h2>
+          <div className={classes.bottom_container}>
+            <h2 className={classes.chart_label}>
+              {dataMode === 1 ? 'Total Volume' : 'Max Weight'}
+            </h2>
+            <Radio.Group onChange={handleDataChange} defaultValue={1}>
+              <Radio.Button value={1}>Volume</Radio.Button>
+              <Radio.Button value={2}>Max</Radio.Button>
+            </Radio.Group>
+          </div>
           <div className={classes.chart_container}>
-            <VolumeChart dataSet={datasetForChart} />
+            {dataMode === 1 ? (
+              <VolumeChart dataSet={datasetForChart} />
+            ) : (
+              <MaxChart dataSet={datasetForChart} />
+            )}
           </div>
         </>
       ) : (
-        <EmptyBox placeholder="No Data (Select exercise)" />
+        <EmptyBox placeholder="No Data" />
       )}
     </div>
   ) : (

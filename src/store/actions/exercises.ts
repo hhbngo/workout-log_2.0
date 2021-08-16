@@ -39,7 +39,7 @@ export interface Entry {
 }
 
 export interface Set {
-  date: string;
+  data: string;
   weight: number;
   reps: number;
   rest: number;

@@ -73,7 +73,7 @@ const Register: React.FC = () => {
           onChange={handleInputChange}
           required
         />
-        <label>Confirm Password</label>
+        <label>Confirm password</label>
         <input
           type="password"
           placeholder="Confirm password"

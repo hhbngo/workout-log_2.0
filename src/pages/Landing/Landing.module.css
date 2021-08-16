@@ -1,0 +1,156 @@
+.hero {
+  background-color: #1890ff;
+  width: 100%;
+  min-height: 75vh;
+  position: relative;
+  padding-top: 90px;
+}
+
+.hero .content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hero_about {
+  color: white;
+  padding: 30px;
+  z-index: 3;
+}
+
+.hero_about h1 {
+  font-size: 52px;
+  width: 100%;
+  color: white;
+}
+
+.hero_about p {
+  color: white;
+  font-size: 20px;
+  width: 80%;
+}
+.hero_about p span {
+  font-weight: bold;
+}
+
+.hero_about button {
+  background-color: white;
+  color: #1890ff;
+  padding: 10px 30px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 22px;
+  margin-top: 35px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.hero_about button:hover {
+  background-color: rgb(245, 245, 245);
+  color: #3290e9;
+}
+.hero_mockup {
+  z-index: 2;
+}
+
+.waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+}
+
+.features {
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap-reverse;
+}
+
+.why h1 {
+  font-size: 32px;
+}
+
+.tabs {
+  width: 50%;
+  margin-left: 50px;
+  padding-top: 30px;
+}
+
+.card {
+  display: flex;
+  max-width: 520px;
+  margin-bottom: 30px;
+}
+
+.description {
+  padding: 0 20px;
+}
+
+.card h2 {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.card p {
+  font-size: 18px;
+  color: rgb(117, 117, 117);
+}
+
+.footer {
+  position: relative;
+  padding: 5px 15px;
+  text-align: right;
+}
+
+.footer p {
+  margin: 0;
+  color: rgb(175, 175, 175);
+}
+
+@media only screen and (max-width: 699px) {
+  .fm_container {
+    overflow-y: hidden;
+    max-height: 250px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .hero {
+    padding-top: 30px;
+    min-height: 80vh;
+  }
+  .hero_mockup {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    padding-left: 50px;
+  }
+  .hero_about {
+    padding: 40px;
+  }
+  .hero_about h1 {
+    font-size: 36px;
+    width: 100%;
+  }
+  .hero_about p {
+    font-size: 18px;
+    width: 90%;
+  }
+
+  .tabs {
+    width: 100%;
+    padding: 0px 40px;
+    margin-left: 0;
+  }
+
+  .features_mockup {
+    padding: 10px 60px;
+    width: 100%;
+    height: auto;
+  }
+}

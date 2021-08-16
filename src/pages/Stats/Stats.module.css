@@ -23,7 +23,12 @@
   padding: 0 20px 20px 0;
 }
 
+.bottom_container {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 14px 16px 18px;
+}
+
 .chart_label {
-  margin: 17px 21px 17px;
   color: rgb(37, 37, 37);
 }

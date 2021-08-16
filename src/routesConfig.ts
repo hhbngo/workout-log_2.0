@@ -49,7 +49,7 @@ const routesConfig: RouteProps = {
   },
   landing: {
     path: '/',
-    component: Login,
+    component: Landing,
     requireAuth: false,
     loggedInAccess: false,
   },
