@@ -5,6 +5,7 @@ import {
   ToggleLoadingAction,
   AddExerciseAction,
   SetExerciseAction,
+  SetEntryDatesAction,
   ResetExercisesAction,
 } from './';
 
@@ -15,6 +16,7 @@ export enum ActionTypes {
   TOGGLE_LOADING,
   ADD_EXERCISE,
   SET_EXERCISE,
+  SET_ENTRY_DATES,
   RESET_EXERCISES,
 }
 
@@ -24,4 +26,5 @@ export type ExercisesAction =
   | ToggleLoadingAction
   | AddExerciseAction
   | SetExerciseAction
+  | SetEntryDatesAction
   | ResetExercisesAction;

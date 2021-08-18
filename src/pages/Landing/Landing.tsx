@@ -5,12 +5,19 @@ import {
   SmileOutlined,
   ThunderboltOutlined,
   LineChartOutlined,
-  DashboardOutlined,
 } from '@ant-design/icons';
 
 const Landing: React.FC = () => {
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
+      <div className={classes.LoginSignup}>
+        <Link to="/login">
+          <p>Login</p>
+        </Link>
+        <Link to="/register">
+          <button>Register</button>
+        </Link>
+      </div>
       <div className={classes.hero}>
         <div className={classes.content}>
           <div className={classes.hero_about}>
@@ -23,7 +30,7 @@ const Landing: React.FC = () => {
               <span>100% completely free!</span>
             </p>
             <Link to="/register">
-              <button>Register Now</button>{' '}
+              <button>Get Started</button>{' '}
             </Link>
           </div>
           <img
@@ -71,8 +78,8 @@ const Landing: React.FC = () => {
             <div className={classes.description}>
               <h2>Easy analysis</h2>
               <p>
-                Get the necessary data about your workouts to track your
-                progress correctly.
+                Get the necessary data about your workouts to track progress
+                correctly.
               </p>
             </div>
           </div>

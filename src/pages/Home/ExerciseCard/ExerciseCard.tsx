@@ -53,7 +53,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
         <span>
           Last entry:{' '}
           {entriesLength > 0
-            ? dayjs(exercise.entries[entriesLength - 1].date).format('MM/DD/YY')
+            ? dayjs(exercise.entries[0].date).format('MM/DD/YY')
             : 'N/A'}
         </span>
       </div>

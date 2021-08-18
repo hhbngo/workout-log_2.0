@@ -4,10 +4,12 @@ import { ActionTypes } from './';
 import { StoreState } from '../reducers';
 import {
   mapExercises,
+  regroupEntryDates,
   insertNewEntry,
   removeEntry,
   insertNewSet,
   removeSet,
+  saveExerciseKeyToLocalStorage,
 } from '../../util/exercises';
 import { message } from 'antd';
 
@@ -34,6 +36,7 @@ export interface Exercise {
 
 export interface Entry {
   date: string;
+  time?: string;
   sets: Set[];
   key: string;
 }
@@ -66,6 +69,11 @@ export interface SetExerciseAction {
   payload: Exercise[];
 }
 
+export interface SetEntryDatesAction {
+  type: ActionTypes.SET_ENTRY_DATES;
+  payload: string[];
+}
+
 export interface ResetExercisesAction {
   type: ActionTypes.RESET_EXERCISES;
 }
@@ -85,10 +93,14 @@ export const fetchExercises = () => {
       const res = await axios.get(
         `${BASE_URL}/users/${userId}/exercises.json?auth=${token}`
       );
-      const exerciseArray = mapExercises(res.data);
+      const { exercises, entryDates } = mapExercises(res.data);
       dispatch<FetchExercisesAction>({
         type: ActionTypes.FETCH_EXERCISES,
-        payload: exerciseArray,
+        payload: exercises,
+      });
+      dispatch<SetEntryDatesAction>({
+        type: ActionTypes.SET_ENTRY_DATES,
+        payload: entryDates,
       });
     } catch (err) {
       dispatch<FetchExercisesAction>({
@@ -148,6 +160,11 @@ export const deleteExercise = (exerciseKey: string) => {
         dispatch<SetExerciseAction>({
           type: ActionTypes.SET_EXERCISE,
           payload: filteredExercises,
+        });
+        const entryDates = regroupEntryDates(filteredExercises);
+        dispatch<SetEntryDatesAction>({
+          type: ActionTypes.SET_ENTRY_DATES,
+          payload: entryDates,
         });
         message.success('Exercise deleted!');
       })
@@ -214,12 +231,18 @@ export const addEntry = (exerciseKey: string) => {
             type: ActionTypes.SET_EXERCISE,
             payload: updatedCollection,
           });
+          const entryDates = regroupEntryDates(updatedCollection);
+          dispatch<SetEntryDatesAction>({
+            type: ActionTypes.SET_ENTRY_DATES,
+            payload: entryDates,
+          });
           message.success('Created entry!');
         } else {
           throw new Error();
         }
       })
       .catch(() => {
+        saveExerciseKeyToLocalStorage(exerciseKey);
         window.location.reload();
       });
   };
@@ -240,9 +263,15 @@ export const deleteEntry = (exerciseKey: string, entryKey: string) => {
           type: ActionTypes.SET_EXERCISE,
           payload: updatedCollection,
         });
+        const entryDates = regroupEntryDates(updatedCollection);
+        dispatch<SetEntryDatesAction>({
+          type: ActionTypes.SET_ENTRY_DATES,
+          payload: entryDates,
+        });
         message.success('Entry deleted!');
       })
       .catch(() => {
+        saveExerciseKeyToLocalStorage(exerciseKey);
         window.location.reload();
       });
   };
@@ -276,6 +305,7 @@ export const addSet = (
         message.success('Set added!');
       })
       .catch(() => {
+        saveExerciseKeyToLocalStorage(exerciseKey, entryKey);
         window.location.reload();
       });
   };
@@ -308,6 +338,7 @@ export const deleteSet = (
         message.success('Set deleted!');
       })
       .catch(() => {
+        saveExerciseKeyToLocalStorage(exerciseKey, entryKey);
         window.location.reload();
       });
   };
@@ -334,6 +365,7 @@ export const savePrefs = (exerciseKey: string, prefs: Prefs) => {
         message.success('Saved set settings!');
       })
       .catch(() => {
+        saveExerciseKeyToLocalStorage(exerciseKey);
         window.location.reload();
       });
   };

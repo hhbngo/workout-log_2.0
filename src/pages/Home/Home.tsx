@@ -10,28 +10,48 @@ import AddButton from '../../components/AddButton/AddButton';
 import SearchBar from './SearchBar/SearchBar';
 import EmptyBox from '../../components/EmptyBox/EmptyBox';
 import ExerciseCard from './ExerciseCard/ExerciseCard';
+import EntryLabel from '../../components/EntryLabel/EntryLabel';
 import {
   fetchExercises,
   addExercise,
   deleteExercise,
   editExercise,
 } from '../../store/actions';
+import { Button, Pagination } from 'antd';
 
 interface EditProps {
   name: string;
   category: string;
 }
 
+interface HistoryState {
+  key?: string;
+  date?: string;
+}
+
+const getHomeMode = () => {
+  const mode = localStorage.getItem('homeMode');
+  return mode ? +mode : 1;
+};
+
+const getHistoricPage = () => {
+  const page = localStorage.getItem('pageHistory');
+  return page ? +page : 1;
+};
+
 const Home: React.FC = () => {
+  const history = useHistory<HistoryState>();
   const [searchVal, setSearchVal] = useState('');
+  const [viewMode, setViewMode] = useState(getHomeMode()); // 1 is exercise, 0 is days
   const [selectedKey, setSelectedKey] = useState<null | string>(null);
   const [show, setShow] = useState(false);
   const [formMode, setFormMode] = useState('Add');
-  const { loading, exercises, fetched } = useSelector(
+  const [paginationPage, setPaginationPage] = useState(getHistoricPage());
+  const [pageFactor, setPageFactor] = useState((getHistoricPage() - 1) * 6);
+  const { loading, exercises, fetched, entryDates } = useSelector(
     (state: StoreState) => state.exercises
   );
   const dispatch = useDispatch();
-  const history = useHistory();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -39,7 +59,12 @@ const Home: React.FC = () => {
       dispatch(fetchExercises());
     }
     window.scrollTo(0, 0);
-  }, []);
+    const previousExerciseKey = window.localStorage.getItem('exerciseKey');
+    if (fetched && previousExerciseKey) {
+      window.localStorage.removeItem('exerciseKey');
+      history.push('/entry', { key: previousExerciseKey });
+    }
+  }, [fetched]);
 
   const handleAddClick = () => {
     form.resetFields();
@@ -86,7 +111,7 @@ const Home: React.FC = () => {
     setSelectedKey(null);
   };
 
-  const handleEntryClick = (key: string) => history.push(`/entry`, { key });
+  const handleEntryClick = (key: string) => history.push('/entry', { key });
 
   const filteredExercises = useMemo(() => {
     return searchVal === ''
@@ -123,6 +148,21 @@ const Home: React.FC = () => {
     ));
   };
 
+  const handleToggleMode = () => {
+    const mode = 1 - viewMode;
+    mode && window.localStorage.removeItem('pageHistory');
+    window.localStorage.setItem('homeMode', mode.toString());
+    setViewMode(mode);
+    setSearchVal('');
+    setPaginationPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    window.localStorage.setItem('pageHistory', page.toString());
+    setPaginationPage(page);
+    setPageFactor((page - 1) * 6);
+  };
+
   return loading ? (
     <div className={classes.spinner_container}>
       <Spin size="large" />
@@ -139,13 +179,50 @@ const Home: React.FC = () => {
         />
       </Modal>
       <SearchBar searchValue={searchVal} onInputChange={onSearchChange} />
-      <AddButton handleAddClick={handleAddClick} />
+      <AddButton handleAddClick={handleAddClick} disabled={!viewMode} />
+      <Button
+        type="default"
+        size="middle"
+        className={classes.view_button}
+        onClick={handleToggleMode}
+      >
+        {viewMode ? 'View workouts by date »' : '« Back to exercises'}
+      </Button>
       {exercises.length === 0 ? (
         <EmptyBox placeholder="No Exercises" />
-      ) : (
+      ) : viewMode ? (
         <div className={classes.cards_container}>
           {renderExerciseCards()}
           {renderPhantoms()}
+        </div>
+      ) : (
+        <div className={classes.labels_container}>
+          {entryDates.slice(0 + pageFactor, 6 + pageFactor).map((date, i) => {
+            return (
+              <EntryLabel
+                key={i}
+                handleEntryLabelClick={() => history.push('/day', { date })}
+                date={date}
+                time={' '}
+              />
+            );
+          })}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              right: '26px',
+            }}
+          >
+            <Pagination
+              onChange={handlePageChange}
+              defaultCurrent={paginationPage}
+              current={paginationPage}
+              total={entryDates.length}
+              pageSize={6}
+              hideOnSinglePage
+            />
+          </div>
         </div>
       )}
     </div>

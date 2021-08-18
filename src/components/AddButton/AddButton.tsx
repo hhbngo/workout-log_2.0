@@ -5,9 +5,14 @@ import { PlusOutlined } from '@ant-design/icons';
 interface AddButtonProps {
   handleAddClick: () => void;
   loading?: boolean;
+  disabled?: boolean;
 }
 
-const AddButton: React.FC<AddButtonProps> = ({ handleAddClick, loading }) => {
+const AddButton: React.FC<AddButtonProps> = ({
+  handleAddClick,
+  loading,
+  disabled,
+}) => {
   return (
     <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
       <Button
@@ -17,6 +22,7 @@ const AddButton: React.FC<AddButtonProps> = ({ handleAddClick, loading }) => {
         icon={<PlusOutlined />}
         onClick={handleAddClick}
         loading={loading}
+        disabled={disabled}
       />
     </div>
   );

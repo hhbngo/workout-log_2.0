@@ -33,8 +33,15 @@ const turnKeysToProperty = <T>(obj: any, key: string): T => {
   return { ...obj, key };
 };
 
+const sortDatesFunction = (a: string, b: string) => {
+  const dateA = new Date(a).getTime();
+  const dateB = new Date(b).getTime();
+  return dateA > dateB ? 1 : -1;
+};
+
 export const mapExercises = (rawData: RawData) => {
   const mappedExercises = [];
+  const entryDates: string[] = [];
 
   for (const key in rawData) {
     const exerciseWithKey = turnKeysToProperty<Exercise>(rawData[key], key);
@@ -49,25 +56,53 @@ export const mapExercises = (rawData: RawData) => {
 
       for (const key in entryWithKey.sets) {
         const setWithKey = turnKeysToProperty<Set>(entryWithKey.sets[key], key);
+        setWithKey.data = dayjs(setWithKey.data).format('hh:mm a');
         mappedSets.push(setWithKey);
       }
       entryWithKey.sets = mappedSets;
+      const formattedEntryDate = dayjs(entryWithKey.date)
+        .format('MMM DD, YYYY-hh:mm a')
+        .split('-');
+      if (!entryDates.includes(formattedEntryDate[0]))
+        entryDates.push(formattedEntryDate[0]);
+      entryWithKey.date = formattedEntryDate[0];
+      entryWithKey.time = formattedEntryDate[1];
       mappedEntries.push(entryWithKey);
     }
     exerciseWithKey.entries = mappedEntries.reverse();
     mappedExercises.push(exerciseWithKey);
   }
 
-  return mappedExercises.reverse();
+  return {
+    exercises: mappedExercises.reverse(),
+    entryDates: entryDates.sort(sortDatesFunction).reverse(),
+  };
+};
+
+export const regroupEntryDates = (exercises: Exercise[]) => {
+  const entryDatesArr: string[] = [];
+  exercises.forEach((exercise) => {
+    exercise.entries.forEach((entry) => {
+      if (!entryDatesArr.includes(entry.date)) entryDatesArr.push(entry.date);
+    });
+  });
+  return entryDatesArr.sort(sortDatesFunction).reverse();
 };
 
 export const insertNewEntry = (
   exercise: Exercise,
   entryData: { date: string; key: string }
 ) => {
+  const formattedEntryDate = dayjs(entryData.date)
+    .format('MMM DD, YYYY-hh:mm a')
+    .split('-');
+  entryData.date = formattedEntryDate[0];
   return {
     ...exercise,
-    entries: [{ ...entryData, sets: [] }, ...exercise.entries],
+    entries: [
+      { ...entryData, time: formattedEntryDate[1], sets: [] },
+      ...exercise.entries,
+    ],
   };
 };
 
@@ -109,6 +144,8 @@ export const insertNewSet = (
     (en) => en.key === entryKey
   );
   const selectedExercise = exercises[selectedExerciseIndex];
+
+  setData.data = dayjs(setData.data).format('hh:mm a');
 
   const updatedExercise = {
     ...selectedExercise,
@@ -200,4 +237,12 @@ export const parseEntriesMaxWeight = (entries: Entry[]) => {
       max: maxWeight,
     };
   });
+};
+
+export const saveExerciseKeyToLocalStorage = (
+  exerciseKey: string,
+  entryKey?: string
+) => {
+  window.localStorage.setItem('exerciseKey', exerciseKey);
+  entryKey && window.localStorage.setItem('entryKey', entryKey);
 };

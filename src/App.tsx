@@ -44,7 +44,7 @@ const App: React.FC = () => {
 
   return authed === null ? null : (
     <>
-      <Navbar isAuth={authed} />
+      {authed && <Navbar />}
       <Switch>
         {routes}
         <Redirect to="/" />

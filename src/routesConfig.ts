@@ -6,6 +6,7 @@ import Landing from './pages/Landing/Landing';
 import Home from './pages/Home/Home';
 import Entry from './pages/Entry/Entry';
 import Stats from './pages/Stats/Stats';
+import DaySummary from './pages/DaySummary/DaySummary';
 
 export interface RouteProps {
   [key: string]: {
@@ -44,6 +45,12 @@ const routesConfig: RouteProps = {
   stats: {
     path: '/stats',
     component: Stats,
+    requireAuth: true,
+    loggedInAccess: true,
+  },
+  day: {
+    path: '/day',
+    component: DaySummary,
     requireAuth: true,
     loggedInAccess: true,
   },

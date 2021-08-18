@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { StoreState } from '../../store/reducers';
-import dayjs from 'dayjs';
 import {
   addEntry,
   deleteEntry,
@@ -12,13 +11,13 @@ import {
 } from '../../store/actions';
 import classes from './Entry.module.css';
 import { Button, Form } from 'antd';
-import { RightOutlined } from '@ant-design/icons';
 
 import Modal from '../../components/Modal/Modal';
 import EntryForm from './EntryForm/EntryForm';
 import AddButton from '../../components/AddButton/AddButton';
 import BackButton from '../../components/BackButton/BackButton';
 import DeleteButton from '../../components/DeleteButton/DeleteButton';
+import EntryLabel from '../../components/EntryLabel/EntryLabel';
 import EmptyBox from '../../components/EmptyBox/EmptyBox';
 import Set from './Set/Set';
 
@@ -27,7 +26,9 @@ interface HistoryState {
 }
 
 const Entry: React.FC = () => {
-  const [selectedEntryKey, setSelectedEntryKey] = useState<null | string>(null);
+  const [selectedEntryKey, setSelectedEntryKey] = useState<null | string>(
+    window.localStorage.getItem('entryKey')
+  );
   const [showModal, setShowModal] = useState(false);
   const [entryDate, setEntryDate] = useState('');
   const [notesChecked, setNotesCheckd] = useState(false);
@@ -50,7 +51,6 @@ const Entry: React.FC = () => {
 
   const handleEntryLabelClick = (key: string, date: string) => {
     setSelectedEntryKey(key);
-    setEntryDate(date);
   };
 
   const goToHome = () => history.push('/');
@@ -115,18 +115,13 @@ const Entry: React.FC = () => {
   const entryLabels = useMemo(() => {
     return exercise && exercise.entries.length > 0 ? (
       exercise.entries.map((e, i) => {
-        const date = dayjs(e.date);
-        const DD = date.format('MMM DD, YYYY');
         return (
-          <div
-            className={classes.entry_label}
+          <EntryLabel
             key={i}
-            onClick={() => handleEntryLabelClick(e.key, DD)}
-          >
-            <p className={classes.date}>{DD}</p>
-            <p className={classes.time}>{date.format('hh:mm a')}</p>
-            <RightOutlined />
-          </div>
+            handleEntryLabelClick={() => handleEntryLabelClick(e.key, e.date)}
+            date={e.date}
+            time={e.time || ' '}
+          />
         );
       })
     ) : (
@@ -135,21 +130,21 @@ const Entry: React.FC = () => {
   }, [exercise]);
 
   const entry = useMemo(() => {
-    return exercise
-      ? exercise.entries.find((e) => e.key === selectedEntryKey)
-      : null;
+    if (!exercise) return null;
+    const selected = exercise.entries.find((e) => e.key === selectedEntryKey);
+    selected && setEntryDate(selected.date);
+    return selected;
   }, [exercise, selectedEntryKey]);
 
   const sets = useMemo(() => {
     return entry && entry.sets.length > 0
       ? entry.sets.map((s, i) => {
-          const time = dayjs(s.data).format('hh:mm a');
           return (
             <Set
               index={i}
               set={s}
               key={i}
-              time={time}
+              time={s.data}
               onDeleteSet={handleSetDelete}
             />
           );
@@ -165,9 +160,21 @@ const Entry: React.FC = () => {
       : '(no sets)';
   }, [entry]);
 
+  const handleDuplicateSet = () => {
+    if (exercise && exercise.key && selectedEntryKey && entry) {
+      const previousSet = entry.sets[entry.sets.length - 1];
+      const setData = { ...previousSet, data: new Date().toISOString() };
+      dispatch(addSet(exercise.key, selectedEntryKey, setData));
+    }
+  };
+
   useEffect(() => {
-    if (!fetched || !exercise) history.push('/');
-    window.scrollTo(0, 0);
+    if (!fetched || !exercise) {
+      history.push('/');
+    } else {
+      const previousEntryKey = window.localStorage.getItem('entryKey');
+      if (previousEntryKey) window.localStorage.removeItem('entryKey');
+    }
   }, [fetched, exercise, entry]);
 
   return exercise ? (
@@ -198,6 +205,11 @@ const Entry: React.FC = () => {
               <span>Volume:</span> {totalVolume}
             </p>
             {sets}
+            {sets && sets.length > 0 && (
+              <div className={classes.duplicate_set}>
+                <p onClick={handleDuplicateSet}>Duplicate previous set +</p>
+              </div>
+            )}
             <Button
               type="dashed"
               style={{

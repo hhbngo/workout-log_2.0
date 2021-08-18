@@ -8,7 +8,7 @@ interface SetProps {
   index: number;
   set: S;
   time: string;
-  onDeleteSet: (key: string) => void;
+  onDeleteSet?: (key: string) => void;
 }
 
 const Set: React.FC<SetProps> = ({ index, set, time, onDeleteSet }) => {
@@ -38,9 +38,11 @@ const Set: React.FC<SetProps> = ({ index, set, time, onDeleteSet }) => {
       >
         {time}
       </p>
-      <p className={classes.Pop_Delete} onClick={() => onDeleteSet(key)}>
-        Delete
-      </p>
+      {onDeleteSet && (
+        <p className={classes.Pop_Delete} onClick={() => onDeleteSet(key)}>
+          Delete
+        </p>
+      )}
     </div>
   );
 

@@ -3,7 +3,7 @@
   width: 100%;
   min-height: 75vh;
   position: relative;
-  padding-top: 90px;
+  padding-top: 70px;
 }
 
 .hero .content {
@@ -33,6 +33,12 @@
 }
 .hero_about p span {
   font-weight: bold;
+}
+
+.login_link {
+  cursor: pointer;
+  margin: 10px 0 0 2px;
+  text-decoration: underline;
 }
 
 .hero_about button {
@@ -112,6 +118,42 @@
   color: rgb(175, 175, 175);
 }
 
+.LoginSignup {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 4;
+  padding: 25px 30px;
+  font-size: 18px;
+  align-items: baseline;
+}
+
+.LoginSignup p {
+  color: white;
+  margin: 0;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.LoginSignup p:hover {
+  text-decoration: underline;
+}
+
+.LoginSignup button:hover {
+  background-color: rgb(245, 245, 245);
+  color: #3290e9;
+}
+
+.LoginSignup button {
+  background-color: white;
+  color: #1890ff;
+  padding: 4px 16px;
+  border: 0;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 699px) {
   .fm_container {
     overflow-y: hidden;
@@ -121,17 +163,18 @@
 
 @media only screen and (max-width: 600px) {
   .hero {
-    padding-top: 30px;
+    padding-top: 60px;
     min-height: 80vh;
   }
   .hero_mockup {
     width: 100%;
     height: auto;
     padding: 20px;
-    padding-left: 50px;
+    padding-left: 40px;
+    padding-right: 20px;
   }
   .hero_about {
-    padding: 40px;
+    padding: 30px;
   }
   .hero_about h1 {
     font-size: 36px;
@@ -144,13 +187,17 @@
 
   .tabs {
     width: 100%;
-    padding: 0px 40px;
+    padding: 0px 30px;
     margin-left: 0;
   }
 
   .features_mockup {
-    padding: 10px 60px;
+    padding: 10px 54px;
     width: 100%;
     height: auto;
+  }
+
+  .LoginSignup {
+    padding: 20px;
   }
 }

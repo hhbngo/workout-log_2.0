@@ -4,12 +4,14 @@ export type ExerciseState = {
   exercises: Exercise[];
   loading: boolean;
   fetched: boolean;
+  entryDates: string[];
 };
 
 const initialState: ExerciseState = {
   exercises: [],
   loading: true,
   fetched: false,
+  entryDates: [],
 };
 
 const reducer = (
@@ -34,6 +36,8 @@ const reducer = (
       };
     case ActionTypes.SET_EXERCISE:
       return { ...state, exercises: action.payload, loading: false };
+    case ActionTypes.SET_ENTRY_DATES:
+      return { ...state, entryDates: action.payload };
     case ActionTypes.RESET_EXERCISES:
       return { ...state, exercises: [], loading: true, fetched: false };
     default:

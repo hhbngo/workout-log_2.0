@@ -12,13 +12,25 @@
 }
 
 .cards_container {
-  padding-top: 100px;
+  padding-top: 140px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
+.labels_container {
+  padding: 138px 16px 0px;
+  margin: 0 auto;
+  min-height: 512px;
+}
+
 .phantom {
   width: clamp(100px, 85%, 350px);
   margin: 0 12px 30px;
+}
+
+.view_button {
+  position: absolute;
+  top: 82px;
+  left: 20px;
 }

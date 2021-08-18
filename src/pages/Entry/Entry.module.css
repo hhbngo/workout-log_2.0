@@ -13,38 +13,8 @@
   text-align: center;
 }
 
-.entry_label {
-  border-radius: 4px;
-  box-sizing: border-box;
-  border: 1px solid #eee;
-  box-shadow: -2px 3px 3px -2px rgb(172, 172, 172);
-  border-right: 3px solid #1890ff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  margin: 0 auto 5px;
-  padding: 10px 12px 10px 16px;
-  width: clamp(100px, 95%, 500px);
-}
-
-.entry_label .date {
-  color: rgb(59, 59, 59);
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.entry_label .time {
-  margin: 0;
-  color: rgb(168, 168, 168);
-  display: block;
-  font-size: 16px;
-  margin-left: auto;
-  margin-right: 8px;
-}
-
 .sets_container {
-  margin: 0 auto 10px;
+  margin: 0 auto 60px;
   width: max-content;
   min-width: 280px;
   border: 1px solid rgb(238, 238, 238);
@@ -64,4 +34,22 @@
 
 .volume span {
   font-weight: bold;
+}
+
+.duplicate_set p {
+  margin: 6px 0px 4px 5px;
+  font-weight: 500;
+  color: #40a9ff;
+  font-size: 16px;
+  cursor: pointer;
+  width: max-content;
+}
+
+.v_name {
+  position: absolute;
+  top: -36px;
+  left: 4px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #3294f0;
 }

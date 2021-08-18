@@ -51,7 +51,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div style={{ paddingTop: 'clamp(50px, 16%, 160px)' }}>
+    <div style={{ paddingTop: 'clamp(50px, 20%, 160px)' }}>
       <form className={classes.form_area} onSubmit={handleSubmit}>
         {error && <div className={classes.error}>{error}</div>}
         <h1>Sign Up</h1>
