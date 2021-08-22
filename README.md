@@ -18,7 +18,7 @@
 
 ## About The Project
 ### Motivation
-This project was primary made to practice and improve at Typescript. I use this application daily and realized the previous version had many flaws and bugs. In this version I completely redesign the UI to be more appealing to use. A new data visualization feature was added. I did my best to 
+This project was primary made to practice and improve at Typescript. I use this application daily and realized the previous version had many flaws and bugs. In this version I completely redesigned the UI to be more appealing to use. A new data visualization feature was added. I did my best to 
 optimize the app using hooks and best practices throughout development. 
 <br/>
 <br/>
