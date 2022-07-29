@@ -29,7 +29,3 @@ See the version 1.0 code [here](https://github.com/hhbngo/workout-log).
 * []()Typescript
 * []()React (Hooks & Redux)
 * []()Firebase authentication and database
-
-## Contact
-
-Feel free to contact me at hieungo287@gmail.com about any bugs, feature requests, etc..
